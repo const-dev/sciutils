@@ -72,8 +72,10 @@ class GradientError(Exception):
         self.grad = grad
         self.approx_grad = approx_grad
         self.diff = diff
+
     def __str__(self):
-        return 'Gradient error: {}'.format(self.diff)
+        return 'Gradient diff: {}\n{}\n{}'.format(
+                self.diff, self.grad, self.approx_grad)
 
 
 def compare_grad(grad, approx_grad):
