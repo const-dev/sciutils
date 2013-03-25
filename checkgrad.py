@@ -1,4 +1,4 @@
-__all__ = ['checkgrad', 'checkgradf']
+__all__ = ['checkgrad', 'checkgradf', 'GradientError']
 
 
 import numpy as np
@@ -94,7 +94,7 @@ if __name__ == '__main__':
 
         fg(np.ones(5))
 
-    except Exception as e:
+    except GradientError as e:
         print 'grad:', e.grad
         print 'approx grad:', e.approx_grad
 
