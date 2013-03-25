@@ -1,7 +1,6 @@
 __all__ = ['checkgrad', 'checkgradf']
 
 
-import sys
 import numpy as np
 from scipy.optimize import approx_fprime
 
@@ -68,12 +67,19 @@ def checkgradf(func):
     return _checkgrad
 
 
+class GradientError(Exception):
+    def __init__(self, grad, approx_grad, diff):
+        self.grad = grad
+        self.approx_grad = approx_grad
+        self.diff = diff
+    def __str__(self):
+        return 'Gradient error: {}'.format(self.diff)
+
+
 def compare_grad(grad, approx_grad):
     err = np.linalg.norm(grad - approx_grad)
     if err > 1e-6:
-        print >> sys.stderr, grad
-        print >> sys.stderr, approx_grad
-        raise Exception('Gradient error: %g' % err)
+        raise GradientError(grad, approx_grad, err)
 
 
 if __name__ == '__main__':
@@ -87,7 +93,8 @@ if __name__ == '__main__':
         fg(np.ones(5))
 
     except Exception as e:
-        print e
+        print 'grad:', e.grad
+        print 'approx grad:', e.approx_grad
 
     try:
         def f(x):
