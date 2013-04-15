@@ -3,6 +3,7 @@ __all__ = ['checkgrad', 'checkgradf', 'GradientError']
 
 import numpy as np
 from scipy.optimize import approx_fprime
+from functools import wraps
 
 
 _epsilon = np.sqrt(np.finfo(float).eps)
@@ -12,7 +13,7 @@ def checkgrad(func):
     """Decorator to check the gradient returned from the objective
     evaluation function.
 
-    The function begin decorated should returns both the function
+    The function begin decorated should return both the function
     value as well as its gradient.
 
     Example
@@ -28,6 +29,7 @@ def checkgrad(func):
     if not __debug__:
         return func
 
+    @wraps(func)
     def _func_and_grad(x, *args):
         ret = func(x, *args)
         if len(ret) == 2:
@@ -54,7 +56,7 @@ def checkgradf(func):
         return 6 * x + 2
 
     """
-
+    @wraps(func)
     def _checkgrad(grad_func):
         if not __debug__:
             return grad_func
