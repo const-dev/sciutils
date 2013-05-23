@@ -13,7 +13,7 @@ def checkgrad(func):
     """Decorator to check the gradient returned from the objective
     evaluation function.
 
-    The function begin decorated should return both the function
+    The function being decorated should return both the function
     value as well as its gradient.
 
     Example
@@ -81,8 +81,8 @@ class GradientError(Exception):
 
 
 def compare_grad(grad, approx_grad):
-    err = np.linalg.norm(grad - approx_grad)
-    if err > 1e-6:
+    err = np.linalg.norm(grad - approx_grad / approx_grad)
+    if err > 1e-5:
         raise GradientError(grad, approx_grad, err)
 
 
