@@ -81,7 +81,7 @@ class GradientError(Exception):
 
 
 def compare_grad(grad, approx_grad):
-    err = np.linalg.norm(grad - approx_grad) / np.linalg.norm(approx_grad)
+    err = np.fabs(grad - approx_grad).max()
     if err > 1e-5:
         raise GradientError(grad, approx_grad, err)
 
